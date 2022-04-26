@@ -6,15 +6,19 @@ The JSON files provide an example ARM template for installing the agent onto a W
 
 Look at `parameters.json` and see the Lacework parameters at the bottom, which correspond to the parameters used in the PS script.  It is good practice to store your Lacework token securely in Azure Key Vault; `parameters.json` shows how to reference a token stored in Key Vault.  The MSI installer URL also needs to be updated.  We will update that URL when we make it public (it is currently beta).  Ask your Lacework SE for the latest URL.
 
-Next, in `template.json`, look at the `parameters` and `variables` sections starting at the top.  `variables` defines the script command used to install the Data Collector.  Next, scroll down to the bottom where we add the `Microsoft.Compute/virtualMachines/extensions` resource.  Here we use a CustomScriptExtension to download and run the PS script with the optional `defender` flag.  FileUris should point to the URL for the PS script.
+Next, in `template.json`, look at the `parameters` and `variables` sections starting at the top.  `variables` defines the script command used to install the Data Collector.  Next, scroll down to the bottom where we add the `Microsoft.Compute/virtualMachines/extensions` resource.  Here we use a CustomScriptExtension to download and run the PS script with the optional `defender` flag.  `FileUris` should point to the URL for the PS script.
 
 The following are commands you can use to deploy the ARM template (these are standard commands):
 
-POWERSHELL: <br/>
-`New-AzResourceGroupDeployment -Name <deployment_name> -ResourceGroupName <resource_group> -TemplateFile .\windows\template.json -TemplateParameterFile .\windows\parameters.json`
+POWERSHELL:
+```
+New-AzResourceGroupDeployment -Name <deployment_name> -ResourceGroupName <resource_group> -TemplateFile .\windows\template.json -TemplateParameterFile .\windows\parameters.json
+```
 
-AZURE CLI: <br/>
-`az deployment group create -n <deployment_name> -g <resource_group> -f ./windows/template.json -p @./windows/parameters.json`
+AZURE CLI:
+```
+az deployment group create -n <deployment_name> -g <resource_group> -f ./windows/template.json -p @./windows/parameters.json
+```
 
 <br/>
 
@@ -30,5 +34,7 @@ Set-AzVMCustomScriptExtension -ResourceGroupName <resource_group> `
     -SecureExecution
 ```
 
-AZURE CLI: <br/>
-`az vm extension set -n customScriptExtension --publisher Microsoft.Compute --extension-instance-name install-lacework-dc -g <resource_group> --vm-name <target_vm_name> --protected-settings '{"FileUris": "https://path/to/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi -defender"}'`
+AZURE CLI:
+```
+az vm extension set -n customScriptExtension --publisher Microsoft.Compute --extension-instance-name install-lacework-dc -g <resource_group> --vm-name <target_vm_name> --protected-settings '{"FileUris": "https://path/to/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi -defender"}'
+```
