@@ -1,0 +1,56 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "resourceGroup": {
+            "value": "your-resource-group"
+        },
+        "networkInterfaceName": {
+            "value": "your-nic-name"
+        },
+        "networkSecurityGroupName": {
+            "value": "your-nsg-name"
+        },
+        "virtualNetworkName": {
+            "value": "your-vnet-name"
+        },
+        "publicIpAddressName": {
+            "value": "your-pip-name"
+        },
+        "virtualMachineName": {
+            "value": "your-vm-name"
+        },
+        "virtualMachineComputerName": {
+            "value": "your-vm-computername"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s"
+        },
+        "adminUsername": {
+            "value": "administrator"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "laceworkEndpoint": {
+            "value": "api.lacework.net"
+        },
+        "laceworkToken": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<subscription_id>/resourceGroups/<resource_group>/providers/Microsoft.KeyVault/vaults/<vault_name>"
+                },
+                "secretName": "laceworkToken"
+            }
+        },
+        "laceworkInstaller": {
+            "value": "https://path/to/LWDataCollector.msi"
+        },
+        "laceworkDefender": {
+            "value": true
+        }
+    }
+}
