@@ -3,7 +3,9 @@
   Installs the Lacework Data Collector on a Windows host.
 
   .DESCRIPTION
-  The Install-LWCollector.ps1 script installs the Lacework Data Collector and adds a local firewall rule to allow the Collector to communicate outbound.  It can also configure a Defender exclusion for the Data Collector (see the defender parameter below).
+  The Install-LWCollector.ps1 script installs the Lacework Data Collector and adds a local firewall rule to allow the
+  Collector to communicate outbound.  It can also configure a Defender exclusion for the Data Collector (see the
+  defender parameter below).
 
   All parameters except defender are required.
 
@@ -11,13 +13,15 @@
   A Lacework agent token that you have created in your Lacework account.
 
   .PARAMETER endpoint
-  The Lacework endpoint to send data to.  Choice is either api.lacework.net or api.fra.lacework.net.  The script defaults to api.lacework.net.
+  The Lacework endpoint to send data to.  Choice is either api.lacework.net or api.fra.lacework.net.  The script
+  defaults to api.lacework.net.
 
   .PARAMETER installer
   URL or local path to use for the installer MSI file.
 
   .PARAMETER defender
-  Exclude the Data Collector from scanning with Defender.  Defaults to false.  This depends on and checks for the Defender Powershell module (we will not install the module if it is not present).
+  Exclude the Data Collector from scanning with Defender.  Defaults to false.  This depends on and checks for the
+  Defender Powershell module (we will not install the module if it is not present).
 #>
 
 Param (
