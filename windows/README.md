@@ -2,7 +2,7 @@ See documentation for full details on the Windows Data Collector:  <ADD_PUBLIC_U
 
 The `Install-LWCollector.ps1` script can be run on any Windows host.  Read the comments in the script for details.  For optimal performance, we recommend that you exclude the Data Collector from scanning with your AV or EDR product.  The script can optionally configure this exclusion for Defender (note that it defaults to not configuring it).  If you use another AV product, then you can customize the script to suit you.
 
-The JSON files provide an example ARM template for installing the agent onto a Windows VM.  The template uses the CustomScriptExtension for Windows to download and install the `Install-LWCollector.ps1` script.  This script needs to be posted where the CustomScript extension can download it via a URL.
+The JSON files provide an example ARM template for installing the agent onto a Windows VM.  The template uses the CustomScriptExtension for Windows to download and install the `Install-LWCollector.ps1` script.  This script needs to be posted where the CustomScriptExtension can download it via a URL.
 
 See the Lacework parameters at the bottom of `parameters.json`, which correspond to the parameters used in the PS script.  It is good practice to store your Lacework token securely in Azure Key Vault; `parameters.json` shows how to reference a token stored in Key Vault.  The MSI installer URL also needs to be updated.  We will update that URL when we make it public (it is currently beta).  Ask your Lacework SE for the latest URL.
 
