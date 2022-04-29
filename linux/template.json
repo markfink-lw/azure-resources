@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
@@ -24,35 +24,27 @@
         "virtualMachineComputerName": {
             "type": "string"
         },
+        "osDiskType": {
+            "type": "string"
+        },
         "virtualMachineSize": {
             "type": "string"
         },
         "adminUsername": {
             "type": "string"
         },
-        "adminPassword": {
-            "type": "secureString"
+        "sshKey": {
+            "type": "string"
         },
         "laceworkEndpoint": {
             "type": "string"
-        },
-        "laceworkToken": {
-            "type": "secureString",
-            "minLength": 56,
-            "maxLength": 56
-        },
-        "laceworkInstaller": {
-            "type": "string"
-        },
-        "laceworkDefender": {
-            "type": "bool"
         }
     },
     "variables": {
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
         "vnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/default')]",
-        "scriptCommand": "[concat('powershell -File Install-LWCollector.ps1 -token ', parameters('laceworkToken'), ' -endpoint ', parameters('laceworkEndpoint'), ' -installer ', parameters('laceworkInstaller'))]"
+        "sshKeyId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/sshPublicKeys', parameters('sshKey'))]"
     },
     "resources": [
         {
@@ -89,7 +81,7 @@
         {
             "name": "[parameters('publicIpAddressName')]",
             "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2019-02-01",
+            "apiVersion": "2020-08-01",
             "location": "[parameters('location')]",
             "properties": {
                 "publicIpAllocationMethod": "Dynamic"
@@ -114,14 +106,14 @@
                     "osDisk": {
                         "createOption": "fromImage",
                         "managedDisk": {
-                            "storageAccountType": "Standard_LRS"
+                            "storageAccountType": "[parameters('osDiskType')]"
                         },
                         "deleteOption": "Delete"
                     },
                     "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "2019-datacenter-smalldisk-g2",
+                        "publisher": "RedHat",
+                        "offer": "RHEL",
+                        "sku": "82gen2",
                         "version": "latest"
                     }
                 },
@@ -138,13 +130,15 @@
                 "osProfile": {
                     "computerName": "[parameters('virtualMachineComputerName')]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]",
-                    "windowsConfiguration": {
-                        "enableAutomaticUpdates": true,
-                        "provisionVmAgent": true,
-                        "patchSettings": {
-                            "enableHotpatching": false,
-                            "patchMode": "AutomaticByOS"
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "keyData": "[reference(variables('sshKeyId'), '2019-12-01').publicKey]",
+                                    "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]"
+                                }
+                            ]
                         }
                     }
                 },
@@ -156,7 +150,7 @@
             }
         },
         {
-            "apiVersion": "2018-06-01",
+            "apiVersion": "2019-03-01",
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(parameters('virtualMachineName'), '/install-lacework-dc')]",
             "location": "[parameters('location')]",
@@ -164,13 +158,13 @@
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ],
             "properties": {
-                "publisher": "Microsoft.Compute",
-                "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.10",
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
                 "protectedSettings": {
-                    "commandToExecute": "[if(parameters('laceworkDefender'), concat(variables('scriptCommand'), ' -defender'), variables('scriptCommand'))]",
+                    "commandToExecute": "[concat('./install.sh -U ', parameters('laceworkEndpoint'))]",
                     "fileUris": [
-                        "https://path/to/Install-LWCollector.ps1"
+                        "https://path/to/install.sh"
                     ]
                 }
             }
