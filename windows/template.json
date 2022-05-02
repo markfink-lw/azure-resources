@@ -170,7 +170,7 @@
                 "protectedSettings": {
                     "commandToExecute": "[if(parameters('laceworkDefender'), concat(variables('scriptCommand'), ' -defender'), variables('scriptCommand'))]",
                     "fileUris": [
-                        "https://path/to/Install-LWCollector.ps1"
+                        "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1"
                     ]
                 }
             }
