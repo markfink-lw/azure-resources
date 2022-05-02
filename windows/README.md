@@ -30,8 +30,8 @@ Set-AzVMCustomScriptExtension `
     -ResourceGroupName <resource_group> `
     -VMName <target_vm_name> `
     -Name install-lacework-dc `
-    -FileUri "https://path/to/Install-LWCollector.ps1" `
-    -Run 'Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi -defender' `
+    -FileUri "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1" `
+    -Run 'Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi [ -defender ]' `
     -SecureExecution
 ```
 
@@ -43,5 +43,5 @@ az vm extension set \
   -n customScriptExtension \
   --publisher Microsoft.Compute \
   --extension-instance-name install-lacework-dc \
-  --protected-settings '{"FileUris": "https://path/to/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi -defender"}'
+  --protected-settings '{"FileUris": "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi [ -defender ]"}'
 ```
