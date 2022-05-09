@@ -26,5 +26,5 @@ az vm extension set \
   -n customScript \
   --publisher Microsoft.Azure.Extensions \
   --extension-instance-name LaceworkDC \
-  --protected-settings '{"fileUris": ["https://path/to/install.sh"],"commandToExecute": "./install.sh -U api.lacework.net"}'
+  --protected-settings '{"fileUris": ["https://path/to/install.sh"],"commandToExecute": "./install.sh -U https://api.lacework.net"}'
 ```
