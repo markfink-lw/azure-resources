@@ -117,7 +117,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
 
 resource lacework_dc 'Microsoft.Compute/virtualMachines/extensions@2018-06-01' = {
   parent: virtualMachine
-  name: 'install-lacework-dc'
+  name: 'LaceworkDC'
   location: location
   properties: {
     publisher: 'Microsoft.Compute'

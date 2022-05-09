@@ -33,7 +33,7 @@
             "value": "your-key"
         },
         "laceworkEndpoint": {
-            "value": "https://api.lacework.net"
+            "value": "api.lacework.net"
         }
     }
 }

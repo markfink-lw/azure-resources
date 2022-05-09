@@ -162,7 +162,7 @@
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.1",
                 "protectedSettings": {
-                    "commandToExecute": "[concat('./install.sh -U ', parameters('laceworkEndpoint'))]",
+                    "commandToExecute": "[concat('./install.sh -U https://', parameters('laceworkEndpoint'))]",
                     "fileUris": [
                         "https://path/to/install.sh"
                     ]

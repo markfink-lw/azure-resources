@@ -1,39 +1,18 @@
-See documentation for full details on the Windows Data Collector:  <ADD_PUBLIC_URL_WHEN_AVAILABLE>
+For full details on the Lacework Data Collector for Windows:  <ADD_PUBLIC_URL_WHEN_AVAILABLE>
 
-The `Install-LWCollector.ps1` script can be run on any Windows host.  Read the comments in the script for details.  For optimal performance, we recommend that you exclude the Data Collector from scanning with your AV or EDR product.  The script can optionally configure this exclusion for Defender (it defaults to not configuring it).  If you use another AV product, then you can customize the script to suit you.
+Ask your Lacework SE for the latest URL for the LWDataCollector.msi installer, which is needed for all Windows deployment methods in this repo.  Also, all Windows deployment methods (in this repo) depend on the `Install-LWCollector.ps1` script you see in this directory.  This script needs to be hosted where the target Azure VMs can download it via a URL (which can be this repo if this version of the script is suitable).  There is nothing sensitive in the script; you can host it where it is most convenient.
 
-`template.json` and `template.bicep` are example ARM templates for installing the agent onto a Windows VM (Microsoft is moving away from JSON to Bicep).  The templates use the CustomScriptExtension for Windows to download and install the `Install-LWCollector.ps1` script.  This script needs to be posted where the CustomScriptExtension can download it via a URL.
+`azurerm` contains ARM templates in JSON and Bicep formats for deploying the Lacework Data Collector onto Azure Windows VMs. `terraform` contains a Terraform template for the same purpose.  Go into each directory for details.
 
-See the Lacework parameters at the bottom of `parameters.json`, which correspond to the parameters used in the PS script.  It is good practice to store your Lacework token securely in Azure Key Vault; `parameters.json` shows how to reference a token stored in Key Vault.  The MSI installer URL also needs to be updated.  We will update that URL when we make it public (it is currently beta).  Ask your Lacework SE for the latest URL.
+`Install-LWCollector.ps1` can be run on any Windows host (in any environment).  Read the comments in the script for details.  For optimal performance, we recommend that you exclude the Data Collector from scanning with your AV or EDR product.  The script can configure this exclusion for Defender (it defaults to *not* configuring it).  If you use another AV/EDR product, then you can customize the script to suit you.
 
-Next, in the template files, look at the `parameters` and `variables` sections starting at the top.  `variables` defines the script command used to install the Data Collector.  Scroll down to the bottom where we add the `Microsoft.Compute/virtualMachines/extensions` resource.  Here we use a CustomScriptExtension to download and run the PS script with the optional `defender` flag.  `FileUris` should point to the URL for the PS script.
+</br>
 
-The following are commands you can use to deploy the ARM template (these are standard commands):
+You can also download and run `Install-LWCollector.ps1` on existing Azure Windows VMs using PowerShell and Azure CLI commands, without using ARM or Terraform templates, in which case you can write PowerShell and/or bash scripts around these commands.
 
-POWERSHELL:
-```
-New-AzResourceGroupDeployment -Name <deployment_name> -ResourceGroupName <resource_group> -TemplateFile .\windows\template.<json | bicep> -TemplateParameterFile .\windows\parameters.json
-```
+`Deploy-LW-Win.ps1` is an example of a PowerShell script that deploys the Collector in batch on many VMs using the PowerShell Az modules (you must have those modules installed).  It should work well in its current form; however, you should read the comments in the script to understand exactly how it works and possibly modify it to suit your needs.
 
-AZURE CLI:
-```
-az deployment group create -n <deployment_name> -g <resource_group> -f ./windows/template.<json | bicep> -p @./windows/parameters.json
-```
-
-<br/>
-
-You can also download and run the PS script to an existing Azure Windows VM using PowerShell and Azure CLI commands, without using an ARM template, in which case you could write a PowerShell or bash script around these commands.
-
-POWERSHELL: <br/>
-```
-Set-AzVMCustomScriptExtension `
-    -ResourceGroupName <resource_group> `
-    -VMName <target_vm_name> `
-    -Name install-lacework-dc `
-    -FileUri "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1" `
-    -Run 'Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi [ -defender ]' `
-    -SecureExecution
-```
+Lastly, the following is an Azure CLI command for installing the Collector that we can write a bash script around, which is on our to-do list for this repo.
 
 AZURE CLI:
 ```
@@ -42,6 +21,6 @@ az vm extension set \
   --vm-name <target_vm_name> \
   -n customScriptExtension \
   --publisher Microsoft.Compute \
-  --extension-instance-name install-lacework-dc \
+  --extension-instance-name LaceworkDC \
   --protected-settings '{"FileUris": "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi [ -defender ]"}'
 ```

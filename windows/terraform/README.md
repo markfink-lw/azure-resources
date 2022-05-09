@@ -1,0 +1,5 @@
+This is an example Terraform template for installing the Lacework Data Collector onto an Azure Windows VM.  The template uses the CustomScriptExtension for Windows to download and install the `Install-LWCollector.ps1` script.  This script is discussed in the README for the windows folder (parent to this folder).
+
+See the Lacework configuration parameters at the bottom of `variables.tf`.  These correspond to the parameters used in `Install-LWCollector.ps1`.  It is good practice to store your Lacework token securely in Azure Key Vault; `variables.tf` shows how to reference a token stored in Key Vault.  The MSI installer URL also needs to be updated; ask your Lacework SE for the latest URL.
+
+Next, in `main.tf`, look at the local variables at the top.  This defines the script command used to install the Data Collector.  Scroll down to the bottom where we add the `azurerm_virtual_machine_extension` resource.  Here we use the CustomScriptExtension to download and run `Install-LWCollector.ps1` with the optional `defender` flag.  `FileUris` should point to the URL for `Install-LWCollector.ps1`.

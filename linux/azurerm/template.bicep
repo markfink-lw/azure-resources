@@ -118,7 +118,7 @@ resource lacework_dc 'Microsoft.Compute/virtualMachines/extensions@2019-03-01' =
     type: 'CustomScript'
     typeHandlerVersion: '2.1'
     protectedSettings: {
-      commandToExecute: './install.sh -U ${laceworkEndpoint}'
+      commandToExecute: './install.sh -U https://${laceworkEndpoint}'
       fileUris: [
         'https://path/to/install.sh'
       ]

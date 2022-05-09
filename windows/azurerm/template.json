@@ -158,7 +158,7 @@
         {
             "apiVersion": "2018-06-01",
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('virtualMachineName'), '/install-lacework-dc')]",
+            "name": "[concat(parameters('virtualMachineName'), '/LaceworkDC')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"

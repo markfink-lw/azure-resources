@@ -1,0 +1,10 @@
+.DS_Store
+.vscode
+token
+commands
+parameters-*.json
+template-*.*
+TODO
+.terraform*
+terraform.*
+*.test
