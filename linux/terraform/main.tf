@@ -58,7 +58,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
 }
 
 resource "azurerm_virtual_machine_extension" "lacework_dc" {
-  name                 = "install-lacework-dc"
+  name                 = "LaceworkDC"
   virtual_machine_id   = azurerm_linux_virtual_machine.linux_vm.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
