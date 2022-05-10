@@ -8,10 +8,10 @@ The following are commands you can use to deploy the ARM template (these are sta
 
 POWERSHELL:
 ```
-New-AzResourceGroupDeployment -Name <deployment_name> -ResourceGroupName <resource_group> -TemplateFile .\windows\template.<json | bicep> -TemplateParameterFile .\windows\parameters.json
+New-AzResourceGroupDeployment -Name <deployment_name> -ResourceGroupName <resource_group> -TemplateFile .\template.<json | bicep> -TemplateParameterFile .\parameters.json
 ```
 
 AZURE CLI:
 ```
-az deployment group create -n <deployment_name> -g <resource_group> -f ./windows/template.<json | bicep> -p @./windows/parameters.json
+az deployment group create -n <deployment_name> -g <resource_group> -f ./template.<json | bicep> -p @./parameters.json
 ```
