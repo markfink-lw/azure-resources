@@ -13,18 +13,22 @@
 #>
 
 ForEach ($sub In Get-AzSubscription -WarningAction SilentlyContinue) {
-    $output = "" | Select-Object Subscription, LogStorage
-    $output.Subscription = $sub.Name
+    $output = "" | Select-Object SubscriptionName, SubscriptionId, LogStorageId
+    $output.SubscriptionName = $sub.Name
+    $output.SubscriptionId = $sub.Id
 
-    ForEach ($diag In Get-AzDiagnosticSetting -SubscriptionId $sub.SubscriptionId -WarningAction SilentlyContinue) {
+    ForEach ($diag In Get-AzDiagnosticSetting `
+                        -SubscriptionId $sub.SubscriptionId `
+                        -WarningAction SilentlyContinue `
+                        -ErrorAction SilentlyContinue) {
         If ($diag.StorageAccountId) {
-            $output.LogStorage = $diag.StorageAccountId
+            $output.LogStorageId = $diag.StorageAccountId
             Write-Output $output
         }
     }
 
-    If (-Not $output.LogStorage) {
-        $output.LogStorage = "None"
+    If (-Not $output.LogStorageId) {
+        $output.LogStorageId = "None"
         Write-Output $output
     }
 }
