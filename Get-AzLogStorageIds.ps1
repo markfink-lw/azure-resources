@@ -18,7 +18,7 @@ ForEach ($sub In Get-AzSubscription -WarningAction SilentlyContinue) {
     $output.SubscriptionId = $sub.Id
 
     ForEach ($diag In Get-AzDiagnosticSetting `
-                        -SubscriptionId $sub.SubscriptionId `
+                        -SubscriptionId $sub.Id `
                         -WarningAction SilentlyContinue `
                         -ErrorAction SilentlyContinue) {
         If ($diag.StorageAccountId) {
