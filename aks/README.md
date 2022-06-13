@@ -8,6 +8,7 @@ First, you need to enable the CSI driver in your cluster.  For an existing clust
 - `key_vault_secrets_provider` in the Terraform template
 
 Next, create a secret in Key Vault that stores the Data Collector configuration.  You can do this in the Portal or via CLI as below.  Here we use `laceworkK8sConfig` as the name of the secret.
+
 AZURE CLI:
 ```
 az keyvault secret set --vault-name YOUR_KEY_VAULT --name laceworkK8sConfig --value '{"tokens":{"AccessToken":"YOUR_TOKEN"}, "tags":{"KubernetesCluster":"YOUR_CLUSTER_NAME","Env":"k8s"}, "serverurl":"https://api.lacework.net"}'
