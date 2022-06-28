@@ -8,3 +8,4 @@ TODO
 .terraform*
 terraform.*
 *.test
+*-values.yaml

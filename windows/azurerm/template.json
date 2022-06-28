@@ -52,7 +52,7 @@
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
         "vnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/default')]",
-        "scriptCommand": "[concat('powershell -File Install-LWCollector.ps1 -token ', parameters('laceworkToken'), ' -endpoint ', parameters('laceworkEndpoint'), ' -installer ', parameters('laceworkInstaller'))]"
+        "scriptCommand": "[concat('powershell -File Install-LWCollector.ps1 -Token ', parameters('laceworkToken'), ' -Endpoint ', parameters('laceworkEndpoint'), ' -MsiInstaller ', parameters('laceworkInstaller'))]"
     },
     "resources": [
         {

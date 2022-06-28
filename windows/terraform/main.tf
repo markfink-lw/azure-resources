@@ -5,7 +5,7 @@ provider "azurerm" {
 locals {
   password = sensitive(var.admin_password == null ? data.azurerm_key_vault_secret.default_password.value : var.admin_password)
   token = sensitive(var.lacework_token == null ? data.azurerm_key_vault_secret.lacework_token.value : var.lacework_token)
-  scriptBase = sensitive("powershell -File Install-LWCollector.ps1 -token ${local.token} -endpoint ${var.lacework_endpoint} -installer ${var.lacework_installer}")
+  scriptBase = sensitive("powershell -File Install-LWCollector.ps1 -Token ${local.token} -Endpoint ${var.lacework_endpoint} -MsiInstaller ${var.lacework_installer}")
   scriptCommand = sensitive(var.lacework_defender ? "${local.scriptBase} -defender" : local.scriptBase)
 }
 

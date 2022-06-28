@@ -22,7 +22,7 @@ param laceworkEndpoint string
 var nsgId = resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', networkSecurityGroupName)
 var vnetId = resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', virtualNetworkName)
 var subnetRef = '${vnetId}/subnets/default'
-var scriptCommand = 'powershell -File Install-LWCollector.ps1 -token ${laceworkToken} -endpoint ${laceworkEndpoint} -installer ${laceworkInstaller}'
+var scriptCommand = 'powershell -File Install-LWCollector.ps1 -Token ${laceworkToken} -Endpoint ${laceworkEndpoint} -MsiInstaller ${laceworkInstaller}'
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
   name: networkInterfaceName
