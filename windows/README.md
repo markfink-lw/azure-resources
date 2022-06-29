@@ -22,5 +22,5 @@ az vm extension set \
   -n customScriptExtension \
   --publisher Microsoft.Compute \
   --extension-instance-name LaceworkDC \
-  --protected-settings '{"FileUris": "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -token <lacework_token> -endpoint api.lacework.net -installer https://path/to/LWDataCollector.msi [ -defender ]"}'
+  --protected-settings '{"FileUris": "https://raw.githubusercontent.com/markfink-lw/azure-resources/master/windows/Install-LWCollector.ps1", "commandToExecute": "powershell -File Install-LWCollector.ps1 -Token <lacework_token> -Endpoint api.lacework.net -MsiInstaller https://path/to/LWDataCollector.msi [ -Defender ]"}'
 ```

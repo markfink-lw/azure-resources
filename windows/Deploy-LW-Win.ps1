@@ -65,8 +65,8 @@ If ( -Not $token ) {
     Exit 1
 }
 
-$command = "Install-LWCollector.ps1 -token $token -endpoint $Endpoint -installer $MsiInstaller"
-If ( $Defender ) { $command += " -defender" }
+$command = "Install-LWCollector.ps1 -Token $token -Endpoint $Endpoint -MsiInstaller $MsiInstaller"
+If ( $Defender ) { $command += " -Defender" }
 
 $result = ""
 
