@@ -11,7 +11,7 @@ pool:
 
 steps:
 - task: CmdLine@2
-  displayName: 'Run a one-line script'
+  displayName: 'Lacework IAC scan'
   inputs:
     script: |
       docker run \
@@ -21,4 +21,5 @@ steps:
       -e LW_API_SECRET=_002ecca16c64d2f86bc73ae07e47a776 \
       -v $(Build.SourcesDirectory):/app/src \
       -e WORKSPACE=src \
+      -e EXIT_FLAG='critical' \
       docker.io/lacework/codesec-iac:latest
