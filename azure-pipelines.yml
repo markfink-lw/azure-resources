@@ -21,5 +21,5 @@ steps:
       -e LW_API_SECRET=_002ecca16c64d2f86bc73ae07e47a776 \
       -v $(Build.SourcesDirectory):/app/src \
       -e WORKSPACE=src \
-      -e EXIT_FLAG='critical' \
+      -e EXIT_FLAG='high' \
       docker.io/lacework/codesec-iac:latest
