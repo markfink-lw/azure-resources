@@ -16,9 +16,9 @@ steps:
     script: |
       docker run \
       -e SCAN_COMMAND=tf-scan \
-      -e LW_ACCOUNT=lwintmarkfink \
-      -e LW_API_KEY=LWINTMAR_415AEA3ADA56D227E1FE86EC3A510964FFF3CC78F7267F8 \
-      -e LW_API_SECRET=_002ecca16c64d2f86bc73ae07e47a776 \
+      -e LW_ACCOUNT=$(LW_ACCOUNT) \
+      -e LW_API_KEY=$(LW_API_KEY) \
+      -e LW_API_SECRET=$(LW_API_SECRET) \
       -v $(Build.SourcesDirectory):/app/src \
       -e WORKSPACE=src \
       -e EXIT_FLAG='high' \
