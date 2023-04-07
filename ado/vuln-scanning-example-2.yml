@@ -1,0 +1,38 @@
+trigger:
+  branches:
+    include:
+    - main
+resources:
+  repositories:
+  - repository: self
+variables:
+- name: tag
+  value: '$(Build.BuildId)'
+stages:
+- stage: Build_and_Scan
+  displayName: Build and scan a Docker image
+  jobs:
+  - job: Build
+    displayName: Build and scan
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/vote/Dockerfile'
+        repository: $(registry)/vote
+        tags: |
+          $(tag)
+    - task: CmdLine@2
+      displayName: Lacework vuln scan
+      inputs:
+        script: |
+          docker run \
+          -e LW_ACCOUNT_NAME=$(LW_ACCOUNT_NAME) \
+          -e LW_ACCESS_TOKEN=$(LW_ACCESS_TOKEN) \
+          -e LW_SCANNER_SAVE_RESULTS=true \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          lacework/lacework-inline-scanner:latest \
+          image evaluate $(registry)/vote $(tag) --policy --critical-violation-exit-code 2

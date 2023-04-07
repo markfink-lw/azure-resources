@@ -1,0 +1,38 @@
+trigger:
+  branches:
+    include:
+    - main
+resources:
+  repositories:
+  - repository: self
+variables:
+- name: tag
+  value: '$(Build.BuildId)'
+stages:
+- stage: Build_and_Scan
+  displayName: Build and scan a Docker image
+  jobs:
+  - job: Build
+    displayName: Build and scan
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/vote/Dockerfile'
+        repository: $(registry)/vote
+        tags: |
+          $(tag)
+    - task: CmdLine@2
+      displayName: Lacework vuln scan
+      env:
+        LW_ACCOUNT_NAME: $(LW_ACCOUNT_NAME)
+        LW_ACCESS_TOKEN: $(LW_ACCESS_TOKEN)
+        LW_SCANNER_SAVE_RESULTS: true
+      inputs:
+        script: |
+          curl -L https://github.com/lacework/lacework-vulnerability-scanner/releases/latest/download/lw-scanner-linux-amd64 -o lw-scanner
+          chmod u+x lw-scanner
+          ./lw-scanner image evaluate $(registry)/vote $(tag) -policy --critical-violation-exit-code 2

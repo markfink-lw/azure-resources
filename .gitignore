@@ -9,3 +9,5 @@ TODO
 terraform.*
 *.test
 *-values.yaml
+test_env.ps1
+alert.json

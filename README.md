@@ -1,6 +1,6 @@
-This repo provides templates and scripts for deploying the Lacework Data Collector onto VMs hosted in Azure.
+This repo contains resources related to integrating Lacework and Azure.  Look at the READMEs in each directory for more details.
 
-Four deployment methods are provided at this time:
+A major focus is deploying the Lacework Data Collector onto VMs hosted in Azure.  Four deployment methods are provided at this time:
 - Azure ARM / Bicep templates
 - Terraform
 - PowerShell Az module commands (in a PowerShell script)
