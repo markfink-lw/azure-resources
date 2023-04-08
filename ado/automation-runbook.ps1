@@ -35,7 +35,7 @@ function Get-LwAlertResources([string]$lwAccount, [string]$token, [string]$event
     try {
         $response = Invoke-RestMethod -Uri $lwUri -Method GET -Headers $lwAuth
     } catch {
-        \
+        Write-Error "Get-LwAlertResources: $_"
         return $null
     }
     $res = @()
@@ -109,9 +109,7 @@ if ($($eventData.event_type) -eq "Compliance") {
     $lwAccount = $($eventData.lacework_account).ToLower()
     $token = Get-LwApiToken $lwAccount
     if ($token) { $res = Get-LwAlertResources $lwAccount $token $($eventData.event_id) }
-    if ($res) {
-        $workItemDesc += Add-WorkItemDescRow "Resource" ($res -join "<br>")
-    }
+    if ($res) { $workItemDesc += Add-WorkItemDescRow "Resource" ($res -join "<br>") }
 }
 
 # If we find a policy in the event description, add a link to it.
