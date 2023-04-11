@@ -35,4 +35,4 @@ stages:
         script: |
           curl -L https://github.com/lacework/lacework-vulnerability-scanner/releases/latest/download/lw-scanner-linux-amd64 -o lw-scanner
           chmod u+x lw-scanner
-          ./lw-scanner image evaluate $(registry)/vote $(tag) -policy --critical-violation-exit-code 2
+          ./lw-scanner image evaluate $(registry)/vote $(tag) --policy --critical-violation-exit-code 2
